@@ -6,7 +6,7 @@
                 <span id="current">{{ convertDate }}</span>
                 <span class="date-control-btn" @click="addMonth">&gt;</span>
             </div>
-            <div class="add-todo-btn">
+            <div class="add-todo-btn" @click="showModal">
                 추가하기
             </div>
         </div>
@@ -28,45 +28,31 @@
                     <div class="day-number">
                         <div></div>
                     </div>
+                    <TodoList :todoList="targetTodoList(weekIndex, dateIndex)"/>
                 </td>
             </tr>
             </tbody>
         </table>
+        <TodoModal v-show="isModalVisible" @close="closeModal" @addTodo="renderCalendar"/>
     </div>
 </template>
 
 <script>
+    import TodoModal from "@/components/TodoModal";
+    import todoService from "@/services/TodoService";
+    import TodoList from "@/components/TodoList";
+
     export default {
         name: "Calendar",
+        components: {TodoList, TodoModal},
         data: function () {
             return {
+                isModalVisible: false,
                 today: new Date(),
                 currentDate: new Date(),
                 currentYear: null,
                 currentMonth: null,
-                todo: {
-                    "2020": {
-                        "1": {
-                            "13": {
-                                "event": [
-                                    {
-                                        detail: "테스트1"
-                                    },
-                                    {
-                                        detail: "테스트2"
-                                    },
-                                ]
-                            },
-                            "14": {
-                                "event": [
-                                    {
-                                        detail: "테스트3"
-                                    },
-                                ]
-                            }
-                        }
-                    }
-                }
+                todoList: []
             }
         },
         computed: {
@@ -74,11 +60,36 @@
                 return this.currentYear + "." + (this.currentMonth < 10 ? '0' + this.currentMonth : this.currentMonth);
             }
         },
-        mounted: function () {
+        created: function () {
             this.setDate();
+            this.loadTodo();
+        },
+        mounted: function () {
             this.renderCalendar();
         },
         methods: {
+            loadTodo: async function () {
+                this.todoList = await todoService.loadTodoList(this.currentYear, this.currentMonth)
+            },
+            targetTodoList: function (weekIndex, dateIndex) {
+                let firstDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+
+                let targetDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), (weekIndex - 1) * 7 + dateIndex - firstDate.getDay());
+
+                let targetTodoList = null;
+
+                for (let key in this.todoList) {
+                    let todo = this.todoList[key]
+                    let split_date = todo.date.split('-');
+
+                    if (targetDate - new Date(Number(split_date[0]), Number(split_date[1]) - 1, Number(split_date[2])) === 0) {
+                        targetTodoList = [todo];
+                        break;
+                    }
+                }
+
+                return targetTodoList
+            },
             renderCalendar: function () {
                 let firstDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
                 let firstDay = firstDate.getDay();
@@ -107,6 +118,8 @@
 
                     el.querySelector('div').innerHTML = targetDate.getDate();
                 });
+
+                this.loadTodo();
             },
             subtractMonth: function () {
                 this.currentDate.setMonth(this.currentDate.getMonth() - 1);
@@ -127,10 +140,16 @@
                 result.setDate(result.getDate() + days);
                 return result;
             },
-            checkToday: function(targetDate) {
+            checkToday: function (targetDate) {
                 return this.today.getFullYear() - targetDate.getFullYear() === 0 &&
                     this.today.getMonth() - targetDate.getMonth() === 0 &&
                     this.today.getDate() - targetDate.getDate() === 0;
+            },
+            showModal() {
+                this.isModalVisible = true;
+            },
+            closeModal() {
+                this.isModalVisible = false;
             }
         }
     }
@@ -234,7 +253,7 @@
     }
 
     .calendar-container #calendar tr td:first-child {
-       border-left: 1px solid #f0f0f0;
+        border-left: 1px solid #f0f0f0;
     }
 
     .calendar-container #calendar tr:last-child td {

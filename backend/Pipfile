@@ -12,6 +12,7 @@ markdown = "*"
 django-filter = "*"
 mongoengine = "*"
 django-rest-framework-mongoengine = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.6"

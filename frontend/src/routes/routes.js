@@ -1,9 +1,9 @@
-import Calendar from "@/views/Calendar";
+import Home from "@/views/Home";
 
 export const routes = [
     {
         path: '/',
-        name: 'Calendar',
-        component: Calendar
+        name: 'Home',
+        component: Home,
     },
 ];
