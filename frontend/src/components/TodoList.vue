@@ -1,7 +1,7 @@
 <template>
     <div id="todo-list-container">
         <div class="todo-list">
-            <div class="todo" v-for="todo in todoList" :key="todo.id">
+            <div class="todo" v-for="todo in todoList" :key="todo.id" @click="alertTodo()">
                 {{ todo.event }}
             </div>
         </div>
@@ -13,6 +13,11 @@
         name: "TodoList",
         props: {
             todoList: {type: Array}
+        },
+        methods: {
+            alertTodo: function() {
+                alert(`${this.todoList[0].date}의 할 일은 ${this.todoList[0].event}입니다.`)
+            }
         }
     }
 </script>
