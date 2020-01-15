@@ -25,7 +25,7 @@ SECRET_KEY = '8pt(c(a4h#txtux_pat)kaph41%=y5889jf(2xk^ae@gno#_!p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'j1star.ddns.net']
 
 # Application definition
 
