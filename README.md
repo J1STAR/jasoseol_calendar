@@ -1,6 +1,6 @@
 # Jasoseol.com Calendar
 
-![jasoseol_calendar](./images\calendar_component.png)
+![jasoseol_calendar](.\images\calendar_component.png)
 
 
 
