@@ -1,6 +1,6 @@
 # Jasoseol.com Calendar
 
-![jasoseol_calendar](https://github.com/J1STAR/jasoseol_calendar/blob/master/images/calendar_component.png)
+![jasoseol_calendar](https://github.com/J1STAR/jasoseol_calendar/raw/master/images/calendar_component.png)
 
 
 
