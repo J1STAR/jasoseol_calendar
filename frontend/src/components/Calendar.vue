@@ -23,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="weekIndex in 5" :key="weekIndex">
+            <tr v-for="weekIndex in 6" :key="weekIndex">
                 <td class="date-cell" v-for="dateIndex in 7" :key="dateIndex">
                     <div class="day-number">
                         <div></div>
